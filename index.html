@@ -95,6 +95,13 @@ footer{text-align:center;color:var(--soft);font-family:var(--serif);font-style:i
 @keyframes slow{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .surprise h2{font-family:var(--serif);font-size:clamp(1.8rem,7vw,2.6rem);margin:0 0 18px;color:var(--red)}
 .surprise p{font-family:var(--serif);font-size:clamp(1.1rem,4.2vw,1.4rem);line-height:1.7;margin:0 0 28px}
+.cover{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(circle at 50% 30%,var(--pink),var(--bg) 70%);animation:fadeUp .8s both}
+.cover h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.2rem,9vw,3.6rem);margin:0 0 6px}.cover h1 i{color:var(--red)}
+.cover p{font-family:var(--serif);font-style:italic;color:var(--soft);margin:0 0 28px}
+.cover .btn{animation:beat 2.2s ease-in-out infinite}
+@keyframes beat{50%{transform:scale(1.05)}}
+.mute{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:15;width:42px;height:42px;border-radius:50%;border:1px solid var(--bd);background:var(--card);color:var(--red);font-size:1.1rem;display:grid;place-items:center;box-shadow:0 4px 14px -6px rgba(0,0,0,.3)}
+.mute.off{color:var(--soft);text-decoration:line-through}
 </style>
 </head>
 <body>
@@ -221,7 +228,7 @@ function Home({s,go}){
 
 function Surprise({onHome}){
  return <div className="page"><div className="surprise"><Hearts n={16} fixed/><div className="msg"><h2>Happy four months ♡</h2>
-  <p>Happy 4 months! Can't believe it has been so long already. I feel so incredibly blessed to have met you, you are so amazing. I love you through every version of you and in ways I don't know how to explain. It's crazy how much you mean to me and how you're my favourite thing to think about whenever I'm not with you. Thanks for being you, can't wait for what our future holds ♡</p>
+  <p>Four months with you, and I wouldn’t trade a single moment. Thank you for all the memories we’ve made so far. I can’t wait to make so many more with you. I love you ♡</p>
   <button className="btn" onClick={onHome}>Back to home</button></div></div></div>}
 
 function App(){
@@ -232,12 +239,22 @@ function App(){
  const both=s.wordle&&s.wordle.status==='won'&&s.conn&&s.conn.status==='won';
  const home=()=>go('home');
  const v=view==='surprise'&&!both?'home':view;
- return <div key={v}>
+ const audio=useRef(null);
+ const [started,setStarted]=useState(false);
+ const [hasSong,setHasSong]=useState(true);
+ const [muted,setMuted]=useState(()=>{try{return localStorage.getItem('ust-muted')==='1'}catch(e){return false}});
+ useEffect(()=>{if(audio.current)audio.current.muted=muted;try{localStorage.setItem('ust-muted',muted?'1':'0')}catch(e){}},[muted]);
+ const begin=()=>{setStarted(true);const a=audio.current;if(a){a.volume=.5;const p=a.play();if(p&&p.catch)p.catch(()=>{})}};
+ return <>
+  <audio ref={audio} src="song.mp3" loop preload="auto" onError={()=>setHasSong(false)}/>
+  {!started&&<div className="cover"><Hearts n={12}/><h1>The Us <i>Two</i> Times</h1><p>A little something for our four months ♡</p><button className="btn fill" onClick={begin}>Tap to open ♡</button></div>}
+  {started&&hasSong&&<button className={'mute'+(muted?' off':'')} aria-label={muted?'Unmute music':'Mute music'} onClick={()=>setMuted(m=>!m)}>♫</button>}
+  <div key={v}>
   {v==='home'&&<Home s={s} go={go}/>}
   {v==='wordle'&&<Wordle saved={s.wordle} onChange={w=>up({wordle:w})} onHome={home}/>}
   {v==='conn'&&<Connections saved={s.conn} onChange={c=>up({conn:c})} onHome={home}/>}
   {v==='surprise'&&<Surprise onHome={home}/>}
- </div>}
+  </div></>}
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 </body>
