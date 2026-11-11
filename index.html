@@ -126,7 +126,7 @@ const newWordle=()=>({guesses:[],status:'playing'});
 function evaluate(g){const r=Array(N).fill('absent'),rem={};
  for(let i=0;i<N;i++){if(g[i]===ANSWER[i])r[i]='correct';else rem[ANSWER[i]]=(rem[ANSWER[i]]||0)+1}
  for(let i=0;i<N;i++){if(r[i]!=='correct'&&rem[g[i]]>0){r[i]='present';rem[g[i]]--}}return r}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')return s}catch(e){}return{}}
+function load(){try{localStorage.removeItem(KEY)}catch(e){}return{}}
 function Hearts({n=10,once,fixed}){
  const hs=useMemo(()=>Array.from({length:n},(_,i)=>({l:Math.random()*100,d:(once?1.6:5)+Math.random()*4,dl:Math.random()*(once?.8:6),s:12+Math.random()*16})),[n]);
  return <div className={'hearts'+(once?' once':'')+(fixed?' fixed':'')}>{hs.map((h,i)=><span key={i} style={{left:h.l+'%',fontSize:h.s,animationDuration:h.d+'s',animationDelay:h.dl+'s'}}>♡</span>)}</div>}
