@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Us Two Times</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#fbf5ef;--card:#fffdfb;--ink:#3a2a2c;--soft:#8a7377;--bd:#e8d6d2;--pink:#f4d6d9;--rose:#d98c96;--red:#a63d4a;--green:#7aa874;--yellow:#d4b04c;--grey:#8d8184;--y:#f5df8a;--g:#a9c98b;--b:#9fc2e6;--p:#b79ad1;--sel:#5b3a42;
+--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#241a1c;--card:#2f2224;--ink:#f6ebe8;--soft:#b9a2a6;--bd:#4a3639;--pink:#4a2f35;--rose:#e29ba5;--red:#e8808d;--sel:#f1d9dc;color-scheme:dark}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+button{font:inherit;color:inherit;cursor:pointer}
+.page{animation:fadeUp .5s ease both;max-width:820px;margin:0 auto;padding:20px 16px 40px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:36px 0 18px}
+.hero .eyebrow{letter-spacing:.25em;font-size:.72rem;text-transform:uppercase;color:var(--rose);font-weight:600}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.4rem,9vw,4.2rem);margin:.2em 0 .1em;letter-spacing:-.01em}
+.hero h1 i{color:var(--red);font-style:italic}
+.hero .sub{font-family:var(--serif);font-style:italic;color:var(--soft);font-size:1.1rem;margin:0}
+.rule{display:flex;align-items:center;gap:12px;color:var(--rose);margin:22px auto;max-width:360px}
+.rule::before,.rule::after{content:"";flex:1;height:1px;background:var(--bd)}
+.welcome{text-align:center;max-width:430px;margin:0 auto 28px;line-height:1.6;color:var(--soft)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.cards{grid-template-columns:1fr}}
+.gcard{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:22px 18px;text-align:center;transition:transform .25s,box-shadow .25s;box-shadow:0 2px 0 var(--bd)}
+.gcard:hover{transform:translateY(-4px);box-shadow:0 14px 30px -14px rgba(166,61,74,.35)}
+.gcard h2{font-family:var(--serif);letter-spacing:.12em;font-size:1.25rem;margin:14px 0 4px}
+.gcard p{margin:0 0 12px;font-size:.88rem;color:var(--soft)}
+.status{display:inline-block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--pink);color:var(--red);font-weight:600}
+.status.done{background:var(--green);color:#fff}
+.prev{height:62px;display:flex;align-items:center;justify-content:center}
+.mrow{display:flex;gap:4px}.mt{width:30px;height:30px;border-radius:4px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:.85rem}
+.mgrid{display:grid;grid-template-columns:repeat(4,22px);gap:3px}.mgrid span{height:13px;border-radius:3px}
+.btn{border:1px solid var(--ink);background:transparent;border-radius:99px;padding:11px 22px;font-weight:600;transition:all .2s}
+.btn:hover{background:var(--ink);color:var(--bg)}
+.btn.fill{background:var(--red);border-color:var(--red);color:#fff}.btn.fill:hover{background:var(--ink);border-color:var(--ink)}
+.btn:disabled{opacity:.35;cursor:default}.btn:disabled:hover{background:transparent;color:inherit}
+.unlock{text-align:center;margin-top:34px;padding:30px 16px;border-radius:20px;background:linear-gradient(160deg,var(--pink),var(--card));border:1px solid var(--bd);animation:fadeUp .7s ease both}
+.unlock h3{font-family:var(--serif);margin:0 0 6px;font-size:1.4rem}.unlock p{margin:0 0 16px;color:var(--soft)}
+footer{text-align:center;color:var(--soft);font-family:var(--serif);font-style:italic;margin-top:40px;font-size:.95rem}
+.bar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:12px;margin-bottom:18px}
+.bar .t{font-family:var(--serif);font-weight:700;font-size:1.2rem}.bar button{background:none;border:none;color:var(--soft);font-weight:500;padding:6px 0}
+.toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-weight:600;font-size:.9rem;z-index:30;animation:fadeUp .25s both;max-width:90vw;text-align:center}
+/* wordle */
+.board{display:grid;gap:5px;max-width:760px;margin:0 auto 18px}
+.row{display:grid;grid-template-columns:repeat(15,1fr);gap:3px}
+.row.shake{animation:shake .5s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.tile{aspect-ratio:1;border:2px solid var(--bd);border-radius:3px;display:grid;place-items:center;font-weight:700;font-size:clamp(.6rem,2.7vw,1.5rem);text-transform:uppercase;background:var(--card);transition:border-color .15s}
+.tile.filled{border-color:var(--soft);animation:pop .12s}
+@keyframes pop{50%{transform:scale(1.12)}}
+.tile.correct{--c:var(--green)}.tile.present{--c:var(--yellow)}.tile.absent{--c:var(--grey)}
+.tile.correct,.tile.present,.tile.absent{background:var(--c);border-color:var(--c);color:#fff}
+.tile.flip{animation:flip .6s ease both}
+@keyframes flip{0%{transform:rotateX(0);background:var(--card);border-color:var(--bd);color:var(--ink)}49%{transform:rotateX(90deg);background:var(--card);border-color:var(--bd);color:var(--ink)}50%{transform:rotateX(90deg);background:var(--c);border-color:var(--c);color:#fff}100%{transform:rotateX(0);background:var(--c);border-color:var(--c);color:#fff}}
+.tile.win{animation:hop .6s ease both}
+@keyframes hop{0%,100%{transform:none}40%{transform:translateY(-12px)}}
+.clue{text-align:center;margin-bottom:14px;min-height:28px;font-family:var(--serif);font-style:italic;color:var(--red)}
+.clue button{background:none;border:1px solid var(--bd);border-radius:99px;padding:6px 14px;font-family:var(--sans);font-style:normal;font-size:.85rem;color:var(--soft)}
+.kb{max-width:560px;margin:0 auto;display:grid;gap:6px}.kr{display:flex;gap:5px;justify-content:center}
+.key{flex:1;max-width:44px;height:50px;border:none;border-radius:6px;background:var(--pink);font-weight:700;font-size:.9rem;padding:0;transition:background .2s}
+.key.wide{max-width:68px;font-size:.7rem}
+.key.correct{background:var(--green);color:#fff}.key.present{background:var(--yellow);color:#fff}.key.absent{background:var(--grey);color:#fff}
+.end{text-align:center;margin:26px auto 0;padding:26px 16px;max-width:520px;border-radius:20px;background:var(--card);border:1px solid var(--bd);animation:fadeUp .7s both;position:relative;overflow:hidden}
+.end h2{font-family:var(--serif);font-size:clamp(1.5rem,6vw,2.1rem);margin:0 0 14px;color:var(--red)}
+.end p{color:var(--soft);margin:0 0 16px}
+/* connections */
+.cwrap{max-width:560px;margin:0 auto}
+.cbanner{border-radius:8px;padding:14px 10px;text-align:center;margin-bottom:8px;color:#2d2326;animation:pop2 .5s both}
+@keyframes pop2{0%{opacity:0;transform:scale(.85) translateY(-14px)}100%{opacity:1;transform:none}}
+.cbanner b{display:block;text-transform:uppercase;letter-spacing:.04em;font-size:.95rem}.cbanner span{font-size:.85rem}
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 16px}
+.ctile{min-height:74px;border:none;border-radius:8px;background:var(--pink);font-weight:700;font-size:clamp(.68rem,2.8vw,.95rem);padding:6px 4px;line-height:1.2;transition:background .15s,transform .15s,color .15s;word-break:break-word}
+.ctile:hover{transform:scale(1.03)}.ctile.sel{background:var(--sel);color:var(--bg);transform:scale(.96)}
+.ctile.bad{animation:shake .5s}
+.minfo{text-align:center;margin:6px 0 14px;font-size:.92rem;color:var(--soft);display:flex;align-items:center;justify-content:center;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--sel);transition:all .3s}.dot.off{background:var(--bd);transform:scale(.6)}
+.ctl{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.gy{background:var(--y)}.gg{background:var(--g)}.gb{background:var(--b)}.gp{background:var(--p)}
+/* hearts */
+.hearts{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hearts.fixed{position:fixed}
+.hearts span{position:absolute;bottom:-30px;color:var(--rose);opacity:0;animation:rise linear infinite}
+.hearts.once span{animation-iteration-count:1;animation-fill-mode:both}
+@keyframes rise{0%{transform:translateY(0) rotate(-10deg);opacity:0}15%{opacity:.7}100%{transform:translateY(-110vh) rotate(14deg);opacity:0}}
+.end .hearts{position:absolute}.end .hearts span{animation-name:riseS}
+@keyframes riseS{0%{transform:translateY(0);opacity:0}20%{opacity:.8}100%{transform:translateY(-420px);opacity:0}}
+.surprise{position:relative;min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:24px;background:radial-gradient(circle at 50% 20%,var(--pink),var(--bg) 70%);overflow:hidden;padding:40px 22px}
+.surprise .msg{position:relative;max-width:520px;animation:slow 2.2s ease both}
+@keyframes slow{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.surprise h2{font-family:var(--serif);font-size:clamp(1.8rem,7vw,2.6rem);margin:0 0 18px;color:var(--red)}
+.surprise p{font-family:var(--serif);font-size:clamp(1.1rem,4.2vw,1.4rem);line-height:1.7;margin:0 0 28px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect,useRef,useCallback,useMemo}=React;
+const KEY='us-two-times-v1';
+const ANSWER='HAPPYFOURMONTHS',N=15,MAXG=6;
+const GROUPS=[
+ {id:0,title:'Places',cls:'gy',items:['Windsor','Waterloo','Amherstburg','Mississauga']},
+ {id:1,title:'Memorable Date Locations',cls:'gg',items:['Point Pelee','Riverside','Moment Snap','Waterloo Park']},
+ {id:2,title:'Things We’ve Eaten Together',cls:'gb',items:['Professor Zaa’s','McDonald’s','MyungGA','The Keg']},
+ {id:3,title:'Songs',cls:'gp',items:['Last Night on Earth','I’m Not the Only One','I See the Light','Marry You']}];
+const ALL=GROUPS.flatMap(g=>g.items.map(t=>({t,g:g.id})));
+const GOF=t=>ALL.find(x=>x.t===t).g;
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const newConn=()=>({order:shuffle(ALL.map(x=>x.t)),solved:[],mistakes:0,status:'playing',tried:[]});
+const newWordle=()=>({guesses:[],status:'playing'});
+function evaluate(g){const r=Array(N).fill('absent'),rem={};
+ for(let i=0;i<N;i++){if(g[i]===ANSWER[i])r[i]='correct';else rem[ANSWER[i]]=(rem[ANSWER[i]]||0)+1}
+ for(let i=0;i<N;i++){if(r[i]!=='correct'&&rem[g[i]]>0){r[i]='present';rem[g[i]]--}}return r}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')return s}catch(e){}return{}}
+function Hearts({n=10,once,fixed}){
+ const hs=useMemo(()=>Array.from({length:n},(_,i)=>({l:Math.random()*100,d:(once?1.6:5)+Math.random()*4,dl:Math.random()*(once?.8:6),s:12+Math.random()*16})),[n]);
+ return <div className={'hearts'+(once?' once':'')+(fixed?' fixed':'')}>{hs.map((h,i)=><span key={i} style={{left:h.l+'%',fontSize:h.s,animationDuration:h.d+'s',animationDelay:h.dl+'s'}}>♡</span>)}</div>}
+function Bar({title,onHome}){return <div className="bar"><button onClick={onHome}>← Home</button><span className="t">{title}</span><span style={{width:48}}/></div>}
+function Toast({msg}){return msg?<div className="toast" role="status">{msg}</div>:null}
+
+function Wordle({saved,onChange,onHome}){
+ const [w,setW]=useState(saved||newWordle());
+ const [cur,setCur]=useState('');
+ const [toast,setToast]=useState('');
+ const [shake,setShake]=useState(false);
+ const [reveal,setReveal]=useState(false);
+ const [clue,setClue]=useState(false);
+ useEffect(()=>{onChange(w)},[w]);
+ const say=m=>{setToast(m);setTimeout(()=>setToast(''),1600)};
+ const playing=w.status==='playing'&&!reveal;
+ const press=useCallback(k=>{
+  if(!playing)return;
+  if(k==='ENTER'){
+   if(cur.length<N){say('Not enough letters: you need '+N);setShake(true);setTimeout(()=>setShake(false),500);return}
+   const gs=[...w.guesses,cur];
+   const st=cur===ANSWER?'won':gs.length>=MAXG?'lost':'playing';
+   setW({guesses:gs,status:st});setCur('');setReveal(true);setTimeout(()=>setReveal(false),N*90+650);
+  }else if(k==='⌫'||k==='BACKSPACE'){setCur(c=>c.slice(0,-1))}
+  else if(/^[A-Z]$/.test(k)){setCur(c=>c.length<N?c+k:c)}
+ },[playing,cur,w]);
+ useEffect(()=>{const h=e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key.toUpperCase();if(k==='ENTER'||k==='BACKSPACE'||/^[A-Z]$/.test(k)){e.preventDefault();press(k)}};window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h)},[press]);
+ const shown=reveal?w.guesses.slice(0,-1):w.guesses;
+ const kstat={};shown.forEach(g=>{const r=evaluate(g);[...g].forEach((c,i)=>{const o={correct:3,present:2,absent:1};if(!kstat[c]||o[r[i]]>o[kstat[c]])kstat[c]=r[i]})});
+ const done=!reveal&&w.status!=='playing';
+ const rows=Array.from({length:MAXG},(_,r)=>{
+  if(r<w.guesses.length){const g=w.guesses[r],ev=evaluate(g),fresh=reveal&&r===w.guesses.length-1,win=done&&w.status==='won'&&r===w.guesses.length-1;
+   return <div className="row" key={r}>{[...g].map((c,i)=><div key={i} className={'tile '+ev[i]+(fresh?' flip':'')+(win?' win':'')} style={{animationDelay:(fresh?i*90:i*60)+'ms'}}>{c}</div>)}</div>}
+  const act=r===w.guesses.length&&w.status==='playing';
+  return <div className={'row'+(act&&shake?' shake':'')} key={r}>{Array.from({length:N},(_,i)=><div key={i} className={'tile'+(act&&cur[i]?' filled':'')}>{act?cur[i]||'':''}</div>)}</div>});
+ const kb=['QWERTYUIOP','ASDFGHJKL','ENTER ZXCVBNM ⌫'];
+ return <div className="page"><Bar title="Wordle" onHome={onHome}/><Toast msg={toast}/>
+  <div className="clue">{clue?'Something we’re celebrating today...':<button onClick={()=>setClue(true)}>Need a clue?</button>}</div>
+  <div className="board">{rows}</div>
+  <div className="kb">{kb.map((r,i)=><div className="kr" key={i}>{(r.includes(' ')?r.split(' ').flatMap((x,j)=>j===1?[...x]:[x]):[...r]).map(k=><button key={k} className={'key'+(k.length>1||k==='⌫'?' wide':'')+' '+(kstat[k]||'')} onClick={()=>press(k==='⌫'?'⌫':k)}>{k}</button>)}</div>)}</div>
+  {done&&w.status==='won'&&<div className="end"><Hearts n={22} once/><h2>Happy four months, my love! ♡</h2><p>You solved it in {w.guesses.length} {w.guesses.length===1?'guess':'guesses'}.</p><button className="btn fill" onClick={onHome}>Back to home</button></div>}
+  {done&&w.status==='lost'&&<div className="end"><h2>So close!</h2><p>The answer was HAPPYFOURMONTHS. Want another go?</p><div className="ctl"><button className="btn fill" onClick={()=>{setW(newWordle());setCur('')}}>Try again</button><button className="btn" onClick={onHome}>Home</button></div></div>}
+ </div>}
+
+function Connections({saved,onChange,onHome}){
+ const [c,setC]=useState(saved||newConn());
+ const [sel,setSel]=useState([]);
+ const [bad,setBad]=useState(false);
+ const [toast,setToast]=useState('');
+ useEffect(()=>{onChange(c)},[c]);
+ const say=m=>{setToast(m);setTimeout(()=>setToast(''),1600)};
+ const playing=c.status==='playing';
+ const toggle=t=>{if(!playing)return;setSel(s=>s.includes(t)?s.filter(x=>x!==t):s.length<4?[...s,t]:s)};
+ const submit=()=>{
+  if(sel.length!==4||!playing)return;
+  const key=[...sel].sort().join('|');
+  if(c.tried.includes(key)){say('Already guessed');return}
+  const cnt={};sel.forEach(t=>{const g=GOF(t);cnt[g]=(cnt[g]||0)+1});
+  const top=Math.max(...Object.values(cnt));
+  if(top===4){const g=GOF(sel[0]);const solved=[...c.solved,g];
+   setC({...c,solved,order:c.order.filter(t=>!sel.includes(t)),status:solved.length===4?'won':'playing'});setSel([])}
+  else{const m=c.mistakes+1;
+   say(top===3?'One away...':'Not quite');setBad(true);setTimeout(()=>setBad(false),500);
+   setC({...c,mistakes:m,tried:[...c.tried,key],status:m>=4?'lost':'playing'});
+   if(m>=4)setSel([])}
+ };
+ const lost=c.status==='lost';
+ const shownGroups=lost?[...c.solved,...GROUPS.map(g=>g.id).filter(i=>!c.solved.includes(i))]:c.solved;
+ return <div className="page"><Bar title="Connections" onHome={onHome}/><Toast msg={toast}/>
+  <div className="cwrap">
+   <p style={{textAlign:'center',color:'var(--soft)',margin:'0 0 14px'}}>Create four groups of four.</p>
+   {shownGroups.map(id=>{const g=GROUPS[id];return <div key={id} className={'cbanner '+g.cls}><b>{g.title}</b><span>{g.items.join(', ')}</span></div>})}
+   {!lost&&c.status!=='won'&&<div className="cgrid">{c.order.map(t=><button key={t} className={'ctile'+(sel.includes(t)?' sel'+(bad?' bad':''):'')} onClick={()=>toggle(t)}>{t}</button>)}</div>}
+   {playing&&<><div className="minfo">Mistakes remaining: {Array.from({length:4},(_,i)=><span key={i} className={'dot'+(i>=4-c.mistakes?' off':'')}/>)}</div>
+   <div className="ctl"><button className="btn" onClick={()=>setC({...c,order:shuffle(c.order)})}>Shuffle</button><button className="btn" disabled={!sel.length} onClick={()=>setSel([])}>Deselect all</button><button className="btn fill" disabled={sel.length!==4} onClick={submit}>Submit</button></div></>}
+   {c.status==='won'&&<div className="end"><Hearts n={26} once/><h2>You found every connection ♡</h2><p>{c.mistakes===0?'Perfect, with no mistakes.':'Solved with '+c.mistakes+(c.mistakes===1?' mistake.':' mistakes.')} Every one of these is a memory of us.</p><button className="btn fill" onClick={onHome}>Back to home</button></div>}
+   {lost&&<div className="end"><h2>Next time!</h2><p>Out of mistakes, but now you can see every group.</p><div className="ctl"><button className="btn fill" onClick={()=>{setC(newConn());setSel([])}}>Try again</button><button className="btn" onClick={onHome}>Home</button></div></div>}
+  </div></div>}
+
+function Home({s,go}){
+ const wd=s.wordle&&s.wordle.status==='won',cd=s.conn&&s.conn.status==='won';
+ const wp=s.wordle&&s.wordle.guesses.length>0,cp=s.conn&&(s.conn.solved.length>0||s.conn.mistakes>0);
+ const st=(d,p)=><span className={'status'+(d?' done':'')}>{d?'Completed ✓':p?'In progress':'Not started'}</span>;
+ const cols=['#7aa874','#d4b04c','#8d8184'];
+ return <div className="page">
+  <div className="hero"><div className="eyebrow">Vol. 4 · Our Four Months</div><h1>The Us <i>Two</i> Times</h1><p className="sub">Celebrating 4 months of us ♡</p></div>
+  <div className="rule">♡</div>
+  <p className="welcome">I made you a little something. Let’s see how well you remember us.</p>
+  <div className="cards">
+   <button className="gcard" onClick={()=>go('wordle')} style={{cursor:'pointer'}}>
+    <div className="prev"><div className="mrow">{[...'HAPPY'].map((c,i)=><div className="mt" key={i} style={{background:[cols[0],cols[2],cols[1],cols[2],cols[0]][i]}}>{c}</div>)}</div></div>
+    <h2>WORDLE</h2><p>One very long word. Six tries.</p>{st(wd,wp)}</button>
+   <button className="gcard" onClick={()=>go('conn')} style={{cursor:'pointer'}}>
+    <div className="prev"><div className="mgrid">{['var(--y)','var(--g)','var(--b)','var(--p)'].flatMap((c,r)=>[0,1,2,3].map(i=><span key={r+'-'+i} style={{background:c}}/>))}</div></div>
+    <h2>CONNECTIONS</h2><p>Find four groups of four.</p>{st(cd,cp)}</button>
+  </div>
+  {wd&&cd&&<div className="unlock"><h3>You did it ♡</h3><p>Both puzzles solved. There’s one more thing.</p><button className="btn fill" onClick={()=>go('surprise')}>One last surprise ♡</button></div>}
+  <footer>Made with love, just for you ♡</footer></div>}
+
+function Surprise({onHome}){
+ return <div className="page"><div className="surprise"><Hearts n={16} fixed/><div className="msg"><h2>Happy four months ♡</h2>
+  <p>Four months with you, and I wouldn’t trade a single moment. Thank you for all the memories we’ve made so far. I can’t wait to make so many more with you. I love you ♡</p>
+  <button className="btn" onClick={onHome}>Back to home</button></div></div></div>}
+
+function App(){
+ const [s,setS]=useState(load);
+ const [view,setView]=useState('home');
+ const up=useCallback(p=>setS(o=>{const n={...o,...p};try{localStorage.setItem(KEY,JSON.stringify(n))}catch(e){}return n}),[]);
+ const go=v=>{setView(v);window.scrollTo(0,0)};
+ const both=s.wordle&&s.wordle.status==='won'&&s.conn&&s.conn.status==='won';
+ const home=()=>go('home');
+ const v=view==='surprise'&&!both?'home':view;
+ return <div key={v}>
+  {v==='home'&&<Home s={s} go={go}/>}
+  {v==='wordle'&&<Wordle saved={s.wordle} onChange={w=>up({wordle:w})} onHome={home}/>}
+  {v==='conn'&&<Connections saved={s.conn} onChange={c=>up({conn:c})} onHome={home}/>}
+  {v==='surprise'&&<Surprise onHome={home}/>}
+ </div>}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
