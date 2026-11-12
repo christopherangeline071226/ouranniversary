@@ -103,6 +103,17 @@ footer{text-align:center;color:var(--soft);font-family:var(--serif);font-style:i
 @keyframes beat{50%{transform:scale(1.05)}}
 .mute{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:15;width:42px;height:42px;border-radius:50%;border:1px solid var(--bd);background:var(--card);color:var(--red);font-size:1.1rem;display:grid;place-items:center;box-shadow:0 4px 14px -6px rgba(0,0,0,.3)}
 .mute.off{color:var(--soft);text-decoration:line-through}
+.tabs{display:flex;justify-content:center;gap:6px;border-bottom:1px solid var(--bd);margin-bottom:6px}
+.tabs button{background:none;border:none;padding:10px 18px;font-family:var(--serif);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem;color:var(--soft);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--red);border-color:var(--red)}
+.collage{columns:2;column-gap:14px;margin-top:10px}
+@media (min-width:640px){.collage{columns:3}}
+.polaroid{break-inside:avoid;margin:0 0 14px;background:#fff;padding:8px 8px 22px;border-radius:3px;box-shadow:0 8px 20px -10px rgba(60,30,35,.4);transform:rotate(var(--r));transition:transform .25s;animation:fadeUp .6s both}
+.polaroid:hover{transform:rotate(0) scale(1.03)}
+.polaroid img{width:100%;display:block;cursor:zoom-in;border-radius:1px}
+.ph{aspect-ratio:3/4;background:var(--pink);display:grid;place-items:center;color:var(--rose);font-size:1.6rem}
+.lb{position:fixed;inset:0;z-index:40;background:rgba(30,18,20,.88);display:grid;place-items:center;padding:20px;animation:fadeUp .25s both;cursor:zoom-out}
+.lb img{max-width:100%;max-height:100%;border-radius:4px}
 </style>
 </head>
 <body>
@@ -213,6 +224,7 @@ function Home({s,go}){
  const st=(d,p)=><span className={'status'+(d?' done':'')}>{d?'Completed ✓':p?'In progress':'Not started'}</span>;
  const cols=['#7aa874','#d4b04c','#8d8184'];
  return <div className="page">
+  <Tabs on="home" go={go}/>
   <div className="hero"><div className="eyebrow">Vol. 4 · Our Four Months</div><h1>The Us <i>Two</i> Times</h1><p className="sub">Celebrating 4 months of us ♡</p></div>
   <div className="rule">♡</div>
   <p className="welcome">I made you a little something. Let’s see how well you remember us.</p>
@@ -225,6 +237,19 @@ function Home({s,go}){
     <h2>CONNECTIONS</h2><p>Find four groups of four.</p>{st(cd,cp)}</button>
   </div>
   {wd&&cd&&<div className="unlock"><h3>You did it ♡</h3><p>Both puzzles solved. There’s one more thing.</p><button className="btn fill" onClick={()=>go('surprise')}>One last surprise ♡</button></div>}
+  <footer>Made with love, just for you ♡</footer></div>}
+
+function Tabs({on,go}){return <div className="tabs"><button className={on==='home'?'on':''} onClick={()=>go('home')}>Games</button><button className={on==='collage'?'on':''} onClick={()=>go('collage')}>Collage</button></div>}
+const EXT=['jpg','jpeg','png','webp','JPG','JPEG','PNG'];
+function Photo({n,onOpen}){
+ const [e,setE]=useState(0);
+ return <figure className="polaroid" style={{'--r':((n%3)-1)*1.6+'deg',animationDelay:n*70+'ms'}}>{e<EXT.length?<img src={'photo'+n+'.'+EXT[e]} alt={'Photo '+n} loading="lazy" onError={()=>setE(e+1)} onClick={ev=>onOpen(ev.currentTarget.src)}/>:<div className="ph">♡</div>}</figure>}
+function Collage({go}){
+ const [lb,setLb]=useState(null);
+ return <div className="page"><Tabs on="collage" go={go}/>
+  <div className="hero" style={{paddingTop:22}}><h1>Our <i>Collage</i></h1><p className="sub">Ten moments I keep coming back to ♡</p></div>
+  <div className="collage">{Array.from({length:10},(_,i)=><Photo key={i} n={i+1} onOpen={setLb}/>)}</div>
+  {lb&&<div className="lb" onClick={()=>setLb(null)}><img src={lb} alt=""/></div>}
   <footer>Made with love, just for you ♡</footer></div>}
 
 function Surprise({onHome}){
@@ -255,6 +280,7 @@ function App(){
   {v==='home'&&<Home s={s} go={go}/>}
   {v==='wordle'&&<Wordle saved={s.wordle} onChange={w=>up({wordle:w})} onHome={home}/>}
   {v==='conn'&&<Connections saved={s.conn} onChange={c=>up({conn:c})} onHome={home}/>}
+  {v==='collage'&&<Collage go={go}/>}
   {v==='surprise'&&<Surprise onHome={home}/>}
   </div></>}
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
